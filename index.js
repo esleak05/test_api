@@ -4,9 +4,19 @@ const cors = require('cors')
 
 const PORT = 8080
 
-app.use(cors({
-    origin: 'http://localhost:5173'
-}))
+const whiteList = ["http://localhost:5173", "http://34.176.196.36"] 
+
+const corsOption = {
+    origin: function(origin, callback){
+        if (whiteList.indexOf(origin) !== -1 || !origin ) {
+            callback(null, true);
+        }
+        else{
+            callback(new Error('Not allowed by CORS'))
+        } 
+    }
+}
+app.use(cors(corsOption));
 
 
 let people=  [
